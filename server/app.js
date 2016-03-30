@@ -4,43 +4,25 @@ var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser')
 var app = express()
-
-
 var jsonParser = bodyParser.json()
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-
-// parse application/x-www-form-urlencoded
 
 
-app.use(function(req, res, next) {
-  req.rawBody = '';
-  req.setEncoding('utf8');
-  req.on('data', function(chunk) {
-    req.rawBody += chunk;
-  });
-  req.on('end', function() {
-    next();
-  });
-});
-app.use(bodyParser());
 
+var commands = ''
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.send('show last commands<br>' + commands);
 });
 
 
-app.post('/users', jsonParser, function (req, res) {
+app.post('/data', jsonParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)
-  res.send('Got a POST  USER request' + req.rawBody);
+  res.send('distance : ' + req.body.distance + " degrees : " + req.body.degrees);
+
+ commands += 'distance : ' + req.body.distance + " degrees : " + req.body.degrees + "<br>";
 
   // create user in req.body
 })
-
-app.post('/', function (req, res) {
-
-  res.send('Got a POST request' + req.body);
-});
 
 app.post('/user', function (req, res) {
 
