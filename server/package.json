@@ -1,0 +1,23 @@
+{
+  "name": "supercarmapping-server",
+  "version": "1.0.0",
+  "description": "npm install",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "connect": "^3.4.1",
+    "express": "^4.13.4",
+    "querystring": "^0.2.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/JulienGenoud/SuperCarMapping"
+  },
+  "author": "",
+  "license": "ISC"
+}
