@@ -10,27 +10,64 @@ var jsonParser = bodyParser.json()
 
 var commands = ''
 
+function getpostion() {
+  // this function should return actual position
+  return ("b4");
+};
+
+function getnextpostion() {
+  // this function should return actual position
+  return ("c6");
+};
+
+function getlastorder() {
+
+  var rotation = 100;
+  var direction = 1;
+  var time = 1000;
+  var order = 2;
+
+  return   '{"rotation" :"' + rotation+ '","direction" : "' +direction + '","time" : "' + time+ '", "order" : "' + order + '"}';
+
+}
+
 app.get('/', function (req, res) {
-  res.send('show last commands<br>' + commands);
+  var form = '<form><br><b>Sent command</b><br>rotation:<br><input type="text" name="rotation"><br>direction:<br><input type="text" name="direction"><br>time:<br><input type="text" name="time"><br><br> <input type="submit" value="Submit"></form><br>';
+
+  if (commands != '')
+    res.send(form + '<table border="1"><tr><td>show last commands</td><td>show car actual postion</td><td>show car next postion</td></tr>'+ commands + '</table><br>');
+  else {
+    res.send("please broacast information<br>" + form);
+  }
 });
 
 
+app.get('/commands', function (req, res) {
+  res.send(commands);
+});
+
+
+app.get('/order', function (req, res) {
+  res.send(getlastorder());
+});
+
 app.post('/data', jsonParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)
-  res.send('distance : ' + req.body.distance + " degrees : " + req.body.degrees);
+  commands += '<tr><td>nReceived distance : ' + req.body.distance + " degrees : " + req.body.degrees + "</td><td>" + getpostion() + "</td><td>" + getnextpostion() + "</td></tr>";
+  // process all the data
 
- commands += 'distance : ' + req.body.distance + " degrees : " + req.body.degrees + "<br>";
+  res.send('distance : ' + req.body.distance + " degrees : " + req.body.degrees + " order : " + req.body.order );
 
-  // create user in req.body
+  console.log('\nReceived \ndistance : ' + req.body.distance + "\ndegrees : " + req.body.degrees + "\norder : " + req.body.order);
+
 })
 
 app.post('/user', function (req, res) {
-
   res.send('Got a POST request user' + req.body);
 });
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Car Mapping listening on port 3000!');
 });
 
 // //We need a function which handles requests and send response
