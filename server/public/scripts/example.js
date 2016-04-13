@@ -88,12 +88,12 @@ var CommentList = React.createClass({
     var commentNodes = this.props.data.map(function(comment) {
       return (
         <div key={comment.id}>
-          <h4>{comment.id}</h4>
-          <div>distance  {comment.degree}</div>
-          <div>degree  {comment.distance}</div>
-          <div>commandROT  {comment.order.rotation}</div>
-          <div>commandDIR  {comment.order.direction}</div>
-          <div>commandTIME  {comment.order.time}</div>
+          <h4 style={{"margin" : "25px 0 0 0"}}>{new Date(comment.id).toLocaleString()}</h4>
+          <div><b>distance</b>  {comment.degree}</div>
+          <div><b>degree</b>  {comment.distance}</div>
+          <div><b>commandROT</b>  {comment.order.rotation}</div>
+          <div><b>commandDIR</b>  {comment.order.direction}</div>
+          <div><b>commandTIME</b>  {comment.order.time}</div>
         </div>
       );
     }).reverse();
