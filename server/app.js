@@ -25,6 +25,20 @@ app.use(function(req, res, next) {
     next();
 });
 
+
+app.get('/api/order', function(req, res) {
+  console.log('\napi  get requested \n' +  new Date().toString());
+
+  fs.readFile(COMMENTS_FILE, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    res.send(JSON.parse(data).slice(-1)[0].order);
+  });
+});
+
+
 app.get('/', function(req, res) {
   console.log('\napi  get requested \n' +  new Date().toString());
 
@@ -81,7 +95,7 @@ console.log('\napi  post requested \n' +  new Date().toString());
   } else {
     dis = req.body.distance;
     deg = req.body.degree;
-    ord = JSON.parse(getlastorder());
+    ord = JSON.parse(getlastorder(dis, deg));
   }
 
   fs.readFile(COMMENTS_FILE, function(err, data) {
