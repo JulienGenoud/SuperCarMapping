@@ -75,7 +75,8 @@ app.get('/api/commands', function(req, res) {
 
 app.post('/api/commands', function(req, res) {
 
-console.log('\napi  post requested \n' +  new Date().toString());
+  console.log('\ndebug ' + req.body.distance + " "+ req.body.degree);
+  console.log('api  post requested \n' +  new Date().toString());
 
  var dis;
  var deg;
@@ -179,7 +180,7 @@ function getlastorder(distance, degree) {
   var direction = 1;
   var time = 1000;
   var order = 2;
-    return   '{"rotation" :"' + rotation+ '","direction" : "' +direction + '","time" : "' + time+ '", "order" : "' + order + '"}';
+  return   '{"rotation" :"' + rotation+ '","direction" : "' +direction + '","time" : "' + time+ '", "order" : "' + order + '"}';
 }
 //
 // app.post('/user', function (req, res) {
