@@ -15,12 +15,12 @@ void setup() {
   delay(1000);
   Serial1.write("AT+CWMODE=1\r\n");
   delay(3000);
-  Serial1.write("AT+CWJAP=\"iot\",\"iotiot99\"\r\n");
-  delay(7000);
+  Serial1.write("AT+CWJAP=\"Nabilla\",\"jaimelepain\"\r\n");
+  delay(8000);
   Serial1.write("AT+CIPMUX=1\r\n");
   delay(3000);
-  Serial1.write("AT+CIPSTART=0,\"TCP\",\"192.168.43.182\",3000\r\n");
-  delay(3000);
+  Serial1.write("AT+CIPSTART=0,\"TCP\",\"192.168.0.100\",3000\r\n");
+  delay(4000);
 
   String cmd;
   cmd = "GET / HTTP/1.1\r\nHost: ";
@@ -31,9 +31,9 @@ void setup() {
   int cmdsize = cmd.length();
   String putain = "AT+CIPSEND=0," + String(cmdsize) + "\r\n";
   Serial.println(cmd.length());
-  Serial1.write("AT+CIPSEND=0,45\r\n");
+  Serial1.write("AT+CIPSEND=0,44\r\n");
   delay(3000);
-  Serial1.write("GET / HTTP/1.1\r\nHost: 192.168.43.182:3000\r\n\r\n");
+  Serial1.write("GET / HTTP/1.1\r\nHost: 192.168.0.100:3000\r\n\r\n");
 }
 
 void loop() {

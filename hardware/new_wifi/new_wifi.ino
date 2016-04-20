@@ -1,7 +1,8 @@
-#define SSID        "linksys"
-#define PASS        "0123456789" // My luggage has the same combination!
+#define SSID        "Nabilla"
+#define PASS        "jaimelepain" // My luggage has the same combination!
 #define DEST_HOST   "retro.hackaday.com"
-#define DEST_IP     "192.254.235.21"
+#define DEST_IP     "192.168.0.103"
+#define DEST_PORT   "3000"
 #define TIMEOUT     5000 // mS
 #define CONTINUE    false
 #define HALT        true
@@ -126,19 +127,18 @@ void setup()
     }
   }
   if (!connection_established) errorHalt("Connection failed");
-  
   delay(5000);
-
-  //echoCommand("AT+CWSAP=?", "OK", CONTINUE); // Test connection
   echoCommand("AT+CIFSR", "", HALT);         // Echo IP address. (Firmware bug - should return "OK".)
-  //echoCommand("AT+CIPMUX=0", "", HALT);      // Set single connection mode
 }
 
-// ******** LOOP ********
 void loop() 
 {
   // Establish TCP connection
-  String cmd = "AT+CIPSTART=0,\"TCP\",\""; cmd += DEST_IP; cmd += "\",80";
+  String cmd = "AT+CIPSTART=0,\"TCP\",\"";
+  cmd += DEST_IP;
+  cmd += "\",";
+  cmd += DEST_PORT;
+  
   if (!echoCommand(cmd, "OK", CONTINUE)) return;
   delay(2000);
   
@@ -146,8 +146,27 @@ void loop()
   if (!echoCommand("AT+CIPSTATUS", "OK", CONTINUE)) return;
 
   // Build HTTP request.
-  cmd = "GET / HTTP/1.1\r\nHost: "; cmd += DEST_HOST; cmd += ":80\r\n\r\n";
-  
+/* 
+  cmd = "GET /api/order/ HTTP/1.1\r\nHost: ";
+  cmd += DEST_IP;
+  cmd += ":";
+  cmd += DEST_PORT;
+  cmd += "\rContent-Type: application/json\r";
+  cmd += "Cache-Control: no-cache";
+  cmd += "\r\n\r\n";
+*/
+
+   cmd  = "POST /api/commands/ HTTP/1.1\r\nHost: ";
+  cmd += DEST_IP;
+  cmd += ":";
+  cmd += DEST_PORT;
+  cmd += "\rContent-Type: application/json\r";
+  cmd += "Cache-Control: no-cache";
+  cmd += "{\"distance\":\"7\",\"degree\":\"30\"}";
+  cmd += "\r\n\r\n";
+
+  Serial.print("arduino> ");
+  Serial.println(cmd);
   // Ready the module to receive raw data
   if (!echoCommand("AT+CIPSEND=0,"+String(cmd.length()), ">", CONTINUE))
   {
@@ -158,11 +177,20 @@ void loop()
   
   // Send the raw HTTP request
   echoCommand(cmd, "OK", CONTINUE);  // GET
-  
+/*
+  cmd  = "POST /api/commands/ HTTP/1.1\rHost:";
+  cmd += DEST_IP;
+  cmd += ":";
+  cmd += DEST_PORT;
+  cmd += "\rContent-Type: application/json\r";
+  cmd += "Cache-Control: no-cache";
+  cmd += "{\"distance\":\"7\",\"degree\":\"30\"}";
+  cmd += "\r\n\r\n";
+*/
   // Loop forever echoing data received from destination server.
   while(true)
     while (Serial1.available())
       Serial.write(Serial1.read());
       
   errorHalt("ONCE ONLY");
-}
+} 
