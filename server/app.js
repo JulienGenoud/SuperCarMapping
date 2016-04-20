@@ -8,7 +8,7 @@ var COMMENTS_FILE = path.join(__dirname, 'commands.json');
 
 app.set('port', (process.env.PORT || 3000));
 
-app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/site', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -25,7 +25,23 @@ app.use(function(req, res, next) {
     next();
 });
 
+
 app.get('/api/order', function(req, res) {
+  console.log('\napi  get requested \n' +  new Date().toString());
+
+  fs.readFile(COMMENTS_FILE, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    res.send(JSON.parse(data).slice(-1)[0].order);
+  });
+});
+
+
+app.get('/', function(req, res) {
+  console.log('\napi  get requested \n' +  new Date().toString());
+
   fs.readFile(COMMENTS_FILE, function(err, data) {
     if (err) {
       console.error(err);
@@ -59,6 +75,9 @@ app.get('/api/commands', function(req, res) {
 
 app.post('/api/commands', function(req, res) {
 
+  console.log('\ndebug ' + req.body.distance + " "+ req.body.degree);
+  console.log('api  post requested \n' +  new Date().toString());
+
  var dis;
  var deg;
  var ord;
@@ -77,7 +96,7 @@ app.post('/api/commands', function(req, res) {
   } else {
     dis = req.body.distance;
     deg = req.body.degree;
-    ord = JSON.parse(getlastorder());
+    ord = JSON.parse(getlastorder(dis, deg));
   }
 
   fs.readFile(COMMENTS_FILE, function(err, data) {
@@ -161,7 +180,7 @@ function getlastorder(distance, degree) {
   var direction = 1;
   var time = 1000;
   var order = 2;
-    return   '{"rotation" :"' + rotation+ '","direction" : "' +direction + '","time" : "' + time+ '", "order" : "' + order + '"}';
+  return   '{"rotation" :"' + rotation+ '","direction" : "' +direction + '","time" : "' + time+ '", "order" : "' + order + '"}';
 }
 //
 // app.post('/user', function (req, res) {

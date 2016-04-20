@@ -88,7 +88,7 @@ var CommentList = React.createClass({
     var commentNodes = this.props.data.map(function(comment) {
       return (
         <div key={comment.id}>
-          <h4 style={{"margin" : "25px 0 0 0"}}>{new Date(comment.id).toLocaleString()}</h4>
+          <h4 style={{"margin" : "25px 0 0 0"}}>{new Date(comment.id).toString()}</h4>
           <div><b>distance</b>  {comment.degree}</div>
           <div><b>degree</b>  {comment.distance}</div>
           <div><b>commandROT</b>  {comment.order.rotation}</div>
