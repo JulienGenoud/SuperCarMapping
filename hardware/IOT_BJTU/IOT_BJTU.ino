@@ -25,7 +25,7 @@ Adafruit_SSD1306 display(OLED_RESET);
 Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(12345);
 NewPing sonar(12, 11, 500); // trigger, echo, max
 
-void displaySensorDetails(void)
+void displaySensorDetails()
 {
   sensor_t sensor;
   mag.getSensor(&sensor);
@@ -61,9 +61,9 @@ void loop()
   Serial.print(sonar.ping_cm());
   Serial.println("cm");
   
-  display.setTextSize(2);
+  display.setTextSize(3);
   display.setTextColor(WHITE);
-  display.println("Distance");
+  display.println("Dist:");
   display.print(sonar.ping_cm(), DEC);
   display.println(" cm");
   display.display();
