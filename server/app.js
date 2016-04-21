@@ -16,13 +16,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Additional middleware which will set headers that we need on each request.
 app.use(function(req, res, next) {
-    // Set permissive CORS header - this allows this server to be used only as
-    // an API server in conjunction with something like webpack-dev-server.
-    res.setHeader('Access-Control-Allow-Origin', '*');
+  // Set permissive CORS header - this allows this server to be used only as
+  // an API server in conjunction with something like webpack-dev-server.
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
-    // Disable caching so we'll always get the latest comments.
-    res.setHeader('Cache-Control', 'no-cache');
-    next();
+  // Disable caching so we'll always get the latest comments.
+  res.setHeader('Cache-Control', 'no-cache');
+  next();
 });
 
 
@@ -78,9 +78,9 @@ app.post('/api/commands', function(req, res) {
   console.log('\ndebug ' + req.body.distance + " "+ req.body.degree);
   console.log('api  post requested \n' +  new Date().toString());
 
- var dis;
- var deg;
- var ord;
+  var dis;
+  var deg;
+  var ord;
 
 
   if (req.body.distance == null || req.body.degree == null) {
@@ -173,13 +173,45 @@ function getnextpostion() {
   return ("c6");
 };
 
+var starpoint = 0;
+var order = 0;
+
+
 function getlastorder(distance, degree) {
 
   // Calc rotation, direction, time with distance and degree output
-  var rotation = 100;
-  var direction = 1;
-  var time = 1000;
-  var order = 2;
+  var rotation = 0;
+  var direction = 0;
+  var time = 0;
+
+  if (distance > 10 && degree == 180 || degree == 0 )
+  {
+    rotation = 100;
+    direction = 1;
+    time = 1000;
+  }
+  else if (distance < 10 && degree == 180)
+  {
+    rotation = 1;
+    direction = 1;
+    time = 1000;
+
+  }
+  else if (distance < 10 && degree == 0)
+  {
+    rotation = 0;
+    direction = 1;
+    time = 1000;
+  }
+  else {
+    rotation = 0;
+    direction = 0;
+    time = 1000;
+  }
+
+  order += 1;
+
+
   return   '{"rotation" :"' + rotation+ '","direction" : "' +direction + '","time" : "' + time+ '", "order" : "' + order + '"}';
 }
 //
